@@ -916,6 +916,12 @@ ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
 LDFLAGS_vmlinux	+= $(call ld-option, --gc-sections,)
 endif
 
+# Suppress RWX load segment warning on GNU ld 2.39+
+LDFLAGS_vmlinux += $(call ld-option, --no-warn-rwx-segments)
+
+# Strip ignored relro warnings if passed to ld
+LDFLAGS_vmlinux := $(filter-out -z norelro,$(LDFLAGS_vmlinux))
+
 ifeq ($(CONFIG_STRIP_ASM_SYMS),y)
 LDFLAGS_vmlinux	+= $(call ld-option, -X,)
 endif
