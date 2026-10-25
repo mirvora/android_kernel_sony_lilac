@@ -1283,6 +1283,9 @@ static unsigned long maybe_relocated(unsigned long crc,
 #ifdef ARCH_RELOCATES_KCRCTAB
 	if (crc_owner == NULL)
 		return crc - (unsigned long)reloc_start;
+#elif defined(CONFIG_ARM64) && defined(CONFIG_RANDOMIZE_BASE)
+	if (crc_owner == NULL)
+		return crc - kaslr_offset();
 #endif
 	return crc;
 }
